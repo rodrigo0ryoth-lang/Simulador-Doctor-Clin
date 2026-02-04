@@ -1,2 +1,2 @@
-# simualdor-cobranca
-Simulador de cobrança clínica
+# Simulador-Doctor-Clin
+Simulador de cobrança

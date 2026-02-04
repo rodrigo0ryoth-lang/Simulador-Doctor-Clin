@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Simulador de Cobrança</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 420px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      font-size: 16px;
+    }
+
+    .result {
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px solid #ddd;
+    }
+
+    .result p {
+      margin: 6px 0;
+    }
+
+    .highlight {
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>Simulador de Cobrança</h2>
+
+  <label>Valor do Procedimento (R$)</label>
+  <input type="number" id="valorBase" step="0.01">
+
+  <label>Forma de Pagamento</label>
+  <select id="pagamento">
+    <option value="PIX">PIX</option>
+    <option value="DEBITO">Débito</option>
+    <option value="CREDITO">Crédito</option>
+  </select>
+
+  <label>Número de Parcelas</label>
+  <input type="number" id="parcelas" value="1">
+
+  <label>Valor NF de Execução (R$)</label>
+  <input type="number" id="nf" step="0.01" value="0">
+
+  <div class="result">
+    <p class="highlight">Valor a cobrar: R$ <span id="valorCobrar">0,00</span></p>
+    <p>Valor da parcela: R$ <span id="valorParcela">0,00</span></p>
+    <p>Taxa total: R$ <span id="taxaTotal">0,00</span></p>
+    <p>Taxa cliente (50%): R$ <span id="taxaCliente">0,00</span></p>
+    <p>Taxa clínica (50%): R$ <span id="taxaClinica">0,00</span></p>
+  </div>
+</div>
+
+<script>
+  const taxas = {
+    PIX: 0,
+    DEBITO: 0.015,
+    CREDITO: 0.035
+  };
+
+  const campos = document.querySelectorAll("input, select");
+  campos.forEach(campo => campo.addEventListener("input", calcular));
+
+  function calcular() {
+    const valorBase = parseFloat(document.getElementById("valorBase").value) || 0;
+    const pagamento = document.getElementById("pagamento").value;
+    const parcelas = parseInt(document.getElementById("parcelas").value) || 1;
+    const nf = parseFloat(document.getElementById("nf").value) || 0;
+
+    const taxa = taxas[pagamento];
+
+    let valorCobrar = valorBase;
+    if (taxa > 0) {
+      valorCobrar = valorBase / (1 - (taxa / 2));
+    }
+
+    const taxaTotal = valorCobrar * taxa;
+    const taxaCliente = taxaTotal / 2;
+    const taxaClinica = taxaTotal / 2;
+    const valorFinal = valorCobrar + nf;
+    const valorParcela = valorFinal / parcelas;
+
+    document.getElementById("valorCobrar").innerText = valorFinal.toFixed(2);
+    document.getElementById("valorParcela").innerText = valorParcela.toFixed(2);
+    document.getElementById("taxaTotal").innerText = taxaTotal.toFixed(2);
+    document.getElementById("taxaCliente").innerText = taxaCliente.toFixed(2);
+    document.getElementById("taxaClinica").innerText = taxaClinica.toFixed(2);
+  }
+</script>
+
+</body>
+</html>

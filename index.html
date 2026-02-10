@@ -300,13 +300,13 @@
     // Parcelas
     const valorParcela = valorFinal / parcelas;
 
-    // ✅ Taxas do meio de pagamento incidem sobre o valor final (com NF)
-const taxaTotal = valorFinal * taxa;
-const taxaCliente = taxaTotal / 2;
-const taxaClinica = taxaTotal / 2;
-
-// Quanto sobra pra clínica (visão interna)
-const liquidoClinica = valorFinal - taxaTotal - valorNF;
+    // ✅ Taxas do meio de pagamento incidem sobre o valor final (com NF) 
+    const taxaTotal = valorFinal * taxa;
+    const taxaCliente = taxaTotal / 2;
+    const taxaClinica = taxaTotal / 2;
+    
+    // Quanto sobra pra clínica (visão interna)
+    const liquidoClinica = valorFinal - taxaTotal - valorNF;
 
 
     els.valorCobrar.textContent = formatBR(valorFinal);
